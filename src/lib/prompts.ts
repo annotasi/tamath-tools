@@ -24,7 +24,7 @@ function buildBaseInstruction(audience: string) {
       : "Untuk siswa, bantu memahami konsep, jangan hanya memberi jawaban akhir.";
 
   return [
-    "Kamu adalah asisten pendidikan matematika dari TaMathTools by Annotasi.",
+    "Kamu adalah asisten pendidikan matematika dari TaMath by Annotasi.",
     "Gunakan bahasa Indonesia yang jelas, ramah, dan sesuai konteks pendidikan Indonesia.",
     audienceInstruction,
     "Jangan mengklaim hasil pasti sempurna.",

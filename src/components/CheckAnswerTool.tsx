@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { AlertCircle, ClipboardCheck, Loader2 } from "lucide-react";
 import { OutputPreview } from "@/components/OutputPreview";
 
 type CheckAnswerPayload = {
@@ -21,6 +22,12 @@ const initialPayload: CheckAnswerPayload = {
 
 const jenjangOptions = ["SD", "SMP", "SMA"] as const;
 const gayaBantuanOptions = ["Ringkas", "Bertahap", "Beri hint dulu"] as const;
+const labelClass = "grid gap-2 text-sm font-bold text-slate-700";
+const fieldClass =
+  "min-h-12 rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-teal-400 focus:ring-4 focus:ring-teal-100";
+const textareaClass = `${fieldClass} min-h-36 resize-y leading-6`;
+const primaryButtonClass =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-xl shadow-slate-900/15 transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none";
 
 export function CheckAnswerTool() {
   const [payload, setPayload] = useState<CheckAnswerPayload>(initialPayload);
@@ -68,23 +75,25 @@ export function CheckAnswerTool() {
   }
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,460px)]">
-      <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <p className="text-sm font-semibold text-teal-700">Tool Siswa</p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-950">
+    <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,460px)] lg:py-12">
+      <section className="rounded-3xl border border-white/80 bg-white/85 p-5 shadow-2xl shadow-cyan-950/10 backdrop-blur sm:p-7">
+        <p className="inline-flex rounded-full bg-rose-50 px-3 py-1 text-sm font-black text-rose-700">
+          Tool Siswa
+        </p>
+        <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950">
           Cek Jawaban
         </h1>
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          Masukkan soal dan langkah jawabanmu. TaMathTools by Annotasi akan
+        <p className="mt-3 text-sm leading-7 text-slate-600">
+          Masukkan soal dan langkah jawabanmu. TaMath by Annotasi akan
           membantu meninjau bagian yang sudah benar dan yang perlu diperbaiki.
         </p>
 
-        <form className="no-print mt-6 grid gap-4" onSubmit={handleSubmit}>
+        <form className="no-print mt-7 grid gap-5" onSubmit={handleSubmit}>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="grid gap-2 text-sm font-medium text-slate-700">
+            <label className={labelClass}>
               Jenjang
               <select
-                className="rounded-md border border-slate-300 bg-white px-3 py-2"
+                className={fieldClass}
                 value={payload.jenjang}
                 onChange={(event) =>
                   setPayload((current) => ({
@@ -102,10 +111,10 @@ export function CheckAnswerTool() {
               </select>
             </label>
 
-            <label className="grid gap-2 text-sm font-medium text-slate-700">
+            <label className={labelClass}>
               Kelas
               <select
-                className="rounded-md border border-slate-300 bg-white px-3 py-2"
+                className={fieldClass}
                 value={payload.kelas}
                 onChange={(event) =>
                   setPayload((current) => ({
@@ -125,11 +134,11 @@ export function CheckAnswerTool() {
             </label>
           </div>
 
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
+          <label className={labelClass}>
             Soal matematika
             <textarea
               required
-              className="min-h-32 rounded-md border border-slate-300 px-3 py-2"
+              className={textareaClass}
               placeholder="Tulis soal matematika di sini."
               value={payload.soalMatematika}
               onChange={(event) =>
@@ -141,11 +150,11 @@ export function CheckAnswerTool() {
             />
           </label>
 
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
+          <label className={labelClass}>
             Langkah jawaban siswa
             <textarea
               required
-              className="min-h-32 rounded-md border border-slate-300 px-3 py-2"
+              className={textareaClass}
               placeholder="Tulis langkah jawaban yang ingin dicek."
               value={payload.langkahJawabanSiswa}
               onChange={(event) =>
@@ -157,10 +166,10 @@ export function CheckAnswerTool() {
             />
           </label>
 
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
+          <label className={labelClass}>
             Gaya bantuan
             <select
-              className="rounded-md border border-slate-300 bg-white px-3 py-2"
+              className={fieldClass}
               value={payload.gayaBantuan}
               onChange={(event) =>
                 setPayload((current) => ({
@@ -179,26 +188,40 @@ export function CheckAnswerTool() {
           </label>
 
           {error ? (
-            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-              {error}
-            </p>
+            <div className="flex gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+              <AlertCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              <p>
+                {error} Coba periksa soal dan langkah jawaban, lalu kirim ulang.
+              </p>
+            </div>
           ) : null}
 
           <button
             type="submit"
             disabled={isLoading}
-            className="rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+            className={primaryButtonClass}
           >
-            {isLoading ? "Mengecek jawaban..." : "Cek jawaban"}
+            {isLoading ? (
+              <>
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                Lagi mengecek jawaban...
+              </>
+            ) : (
+              <>
+                <ClipboardCheck className="size-4" aria-hidden="true" />
+                Cek jawaban
+              </>
+            )}
           </button>
         </form>
       </section>
 
       <div className="grid gap-3">
         {isLoading ? (
-          <p className="no-print rounded-md border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-medium text-teal-800">
-            TaMathTools by Annotasi sedang mengecek jawaban...
-          </p>
+          <div className="no-print flex items-center gap-3 rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-bold text-teal-800 shadow-sm">
+            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            TaMath by Annotasi sedang membaca langkah jawaban...
+          </div>
         ) : null}
         <OutputPreview title="Hasil Cek Jawaban" output={output || undefined} />
       </div>

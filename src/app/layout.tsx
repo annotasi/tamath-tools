@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TaMathTools by Annotasi",
+  title: "TaMath by Annotasi",
   description:
     "Mini tools matematika no-login dan no-database untuk guru dan siswa Indonesia.",
 };

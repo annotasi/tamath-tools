@@ -8,8 +8,8 @@ This version has breaking changes -- APIs, conventions, and file structure may a
 
 ## Product
 
-- Product name: **TaMathTools by Annotasi**.
-- All visible branding must use the exact text **TaMathTools by Annotasi**.
+- Product name: **TaMath by Annotasi**.
+- All visible branding must use the exact text **TaMath by Annotasi**.
 - MVP v0.1 is a no-login and no-database web app for Indonesian math teachers and students.
 - All pages, labels, copy, validation messages, and generated UI text must be in Indonesian.
 

@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "TaMathTools by Annotasi belum menerima hasil dari AI. Silakan coba lagi.",
+            "TaMath by Annotasi belum menerima hasil dari AI. Silakan coba lagi.",
         },
         { status: 502 },
       );
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "TaMathTools by Annotasi belum bisa menghubungi layanan AI. Silakan coba beberapa saat lagi.",
+          "TaMath by Annotasi belum bisa menghubungi layanan AI. Silakan coba beberapa saat lagi.",
       },
       { status: 502 },
     );
