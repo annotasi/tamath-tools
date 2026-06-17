@@ -28,7 +28,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold text-slate-950">Untuk Guru</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {teacherTools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} />
+              <ToolCard key={tool.id} tool={tool} />
             ))}
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function HomePage() {
         <h2 className="text-2xl font-semibold text-slate-950">Untuk Siswa</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {studentTools.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} />
+            <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
       </section>

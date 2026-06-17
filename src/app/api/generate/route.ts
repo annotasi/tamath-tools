@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { buildPlaceholderOutput } from "@/lib/prompts";
+import {
+  buildCheckAnswerPlaceholderOutput,
+  buildCreateQuestionPlaceholderOutput,
+  buildCreateWorksheetPlaceholderOutput,
+} from "@/lib/prompts";
 import { generateRequestSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
@@ -16,10 +20,24 @@ export async function POST(request: Request) {
     );
   }
 
-  const output = buildPlaceholderOutput(parsed.data.tool, parsed.data.topic);
+  const output = (() => {
+    if (parsed.data.tool === "buat-soal") {
+      return buildCreateQuestionPlaceholderOutput(parsed.data.payload);
+    }
+
+    if (parsed.data.tool === "buat-lkpd") {
+      return buildCreateWorksheetPlaceholderOutput(parsed.data.payload);
+    }
+
+    if (parsed.data.tool === "cek-jawaban") {
+      return buildCheckAnswerPlaceholderOutput(parsed.data.payload);
+    }
+  })();
 
   return NextResponse.json({
     output,
+    tool: parsed.data.tool,
+    audience: parsed.data.audience,
     note: "Ini masih response placeholder. Integrasi OpenAI belum diaktifkan.",
   });
 }

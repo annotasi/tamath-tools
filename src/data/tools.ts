@@ -1,46 +1,48 @@
 export type ToolAudience = "guru" | "siswa";
 
-export type ToolSlug = "buat-soal" | "buat-lkpd" | "cek-jawaban";
+export type ToolId = "buat-soal-matematika" | "buat-lkpd" | "cek-jawaban";
+
+export type ToolStatus = "active" | "soon";
 
 export type Tool = {
-  slug: ToolSlug;
+  id: ToolId;
   title: string;
-  description: string;
-  audience: ToolAudience;
   href: string;
-  cta: string;
+  audience: ToolAudience;
+  description: string;
+  status: ToolStatus;
 };
 
 export const tools: Tool[] = [
   {
-    slug: "buat-soal",
+    id: "buat-soal-matematika",
     title: "Buat Soal Matematika",
+    href: "/tools/guru/buat-soal",
+    audience: "guru",
     description:
       "Susun draf soal matematika berdasarkan jenjang, kelas, topik, dan tingkat kesulitan.",
-    audience: "guru",
-    href: "/tools/guru/buat-soal",
-    cta: "Buka tool soal",
+    status: "active",
   },
   {
-    slug: "buat-lkpd",
+    id: "buat-lkpd",
     title: "Buat LKPD",
+    href: "/tools/guru/buat-lkpd",
+    audience: "guru",
     description:
       "Buat kerangka LKPD matematika yang siap disalin dan dirapikan untuk kelas.",
-    audience: "guru",
-    href: "/tools/guru/buat-lkpd",
-    cta: "Buka tool LKPD",
+    status: "active",
   },
   {
-    slug: "cek-jawaban",
+    id: "cek-jawaban",
     title: "Cek Jawaban",
+    href: "/tools/siswa/cek-jawaban",
+    audience: "siswa",
     description:
       "Bantu siswa meninjau jawaban matematika dengan umpan balik yang mudah dipahami.",
-    audience: "siswa",
-    href: "/tools/siswa/cek-jawaban",
-    cta: "Buka cek jawaban",
+    status: "active",
   },
 ];
 
-export function getToolBySlug(slug: ToolSlug) {
-  return tools.find((tool) => tool.slug === slug);
+export function getToolById(id: ToolId) {
+  return tools.find((tool) => tool.id === id);
 }
