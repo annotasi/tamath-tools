@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import {
-  buildCheckAnswerPlaceholderOutput,
-  buildCreateQuestionPlaceholderOutput,
-  buildCreateWorksheetPlaceholderOutput,
-} from "@/lib/prompts";
+import { createOpenAIClient, getOpenAIModel, MissingOpenAIKeyError } from "@/lib/openai";
+import { buildPrompt } from "@/lib/prompts";
 import { generateRequestSchema } from "@/lib/validation";
+
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -20,24 +19,51 @@ export async function POST(request: Request) {
     );
   }
 
-  const output = (() => {
-    if (parsed.data.tool === "buat-soal") {
-      return buildCreateQuestionPlaceholderOutput(parsed.data.payload);
+  try {
+    const client = createOpenAIClient();
+    const prompt = buildPrompt(
+      parsed.data.tool,
+      parsed.data.audience,
+      parsed.data.payload,
+    );
+
+    const response = await client.responses.create({
+      model: getOpenAIModel(),
+      input: prompt,
+    });
+
+    const result = response.output_text?.trim();
+
+    if (!result) {
+      return NextResponse.json(
+        {
+          error:
+            "TaMathTools by Annotasi belum menerima hasil dari AI. Silakan coba lagi.",
+        },
+        { status: 502 },
+      );
     }
 
-    if (parsed.data.tool === "buat-lkpd") {
-      return buildCreateWorksheetPlaceholderOutput(parsed.data.payload);
+    return NextResponse.json({ result });
+  } catch (error) {
+    if (error instanceof MissingOpenAIKeyError) {
+      return NextResponse.json(
+        {
+          error:
+            "Konfigurasi OpenAI belum tersedia. Pastikan OPENAI_API_KEY sudah diatur di server.",
+        },
+        { status: 500 },
+      );
     }
 
-    if (parsed.data.tool === "cek-jawaban") {
-      return buildCheckAnswerPlaceholderOutput(parsed.data.payload);
-    }
-  })();
+    console.error("OpenAI generate error", error);
 
-  return NextResponse.json({
-    output,
-    tool: parsed.data.tool,
-    audience: parsed.data.audience,
-    note: "Ini masih response placeholder. Integrasi OpenAI belum diaktifkan.",
-  });
+    return NextResponse.json(
+      {
+        error:
+          "TaMathTools by Annotasi belum bisa menghubungi layanan AI. Silakan coba beberapa saat lagi.",
+      },
+      { status: 502 },
+    );
+  }
 }

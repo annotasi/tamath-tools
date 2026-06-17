@@ -28,6 +28,10 @@ body {
     margin: 16mm;
   }
 
+  * {
+    visibility: hidden !important;
+  }
+
   body {
     background: white;
   }
@@ -36,9 +40,37 @@ body {
     display: none !important;
   }
 
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+
   .print-area {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
     border: 0 !important;
     box-shadow: none !important;
     padding: 0 !important;
+  }
+
+  .print-area > div {
+    padding: 0 !important;
+  }
+
+  .output-content {
+    background: white !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .print-brand {
+    display: block !important;
+    margin-top: 18pt !important;
+    color: #475569 !important;
+    font-size: 9pt !important;
   }
 }

@@ -47,15 +47,15 @@ export function CheckAnswerTool() {
       });
 
       const data = (await response.json()) as {
-        output?: string;
+        result?: string;
         error?: string;
       };
 
-      if (!response.ok || !data.output) {
+      if (!response.ok || !data.result) {
         throw new Error(data.error || "Gagal mengecek jawaban.");
       }
 
-      setOutput(data.output);
+      setOutput(data.result);
     } catch (caughtError) {
       setError(
         caughtError instanceof Error
